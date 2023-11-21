@@ -66,6 +66,19 @@ def login():
 def index():
     # Verificar si el usuario ha iniciado sesión
     if 'loggedin' in session and session['loggedin']:
+        # El usuario ha iniciado sesión, se renderiza index.html
+        return render_template('index.html')
+    else:
+        # El usuario no ha iniciado sesión, redirigir al login
+        return redirect(url_for('login'))
+
+
+
+@app.route('/')
+def home():
+
+    
+    if 'loggedin' in session and session['loggedin']:
         user_id = obtener_user_id()  # Obtener el user_id del usuario actual
         if user_id:
             cursor = db.database.cursor()
@@ -77,16 +90,11 @@ def index():
                 insertObject.append(dict(zip(columName, record)))
             cursor.close()
             return render_template('index.html', data=insertObject)  # Pasar las tareas del usuario a la plantilla
+        else:
+            flash('No se pudo obtener el ID del usuario.')
+            return redirect(url_for('login'))
     else:
-        # El usuario no ha iniciado sesión, redirigir al login
-        return redirect(url_for('home'))
-
-
-
-@app.route('/')
-def home():
-
-    return redirect(url_for('login'))
+        return redirect(url_for('login'))
 
 
 #Ruta para guardar usuarios en la bdd
