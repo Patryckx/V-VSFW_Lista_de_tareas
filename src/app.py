@@ -116,6 +116,8 @@ def obtener_user_id():
         if user:
             return user[0]
     return None
+
+
     
 # @app.route('/delete/<string:id>', methods=['POST'])
 # def delete(id):
@@ -168,7 +170,13 @@ def edit(id):
     else:
         return redirect(url_for('home'))
 
-     
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('username', None)
+    flash('Sesión cerrada correctamente.')
+    return redirect(url_for('home'))
+
      
 
 
