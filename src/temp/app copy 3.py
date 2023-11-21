@@ -22,21 +22,21 @@ def registro():
         username = request.form['username']
         password = request.form['password']
 
-        # Verificar si el usuario ya existe en la base de datos
         cursor = db.database.cursor()
         cursor.execute("SELECT * FROM usuarios WHERE username = %s", (username,))
         existing_user = cursor.fetchone()
 
         if existing_user:
-            # El usuario ya existe
-            flash('El usuario ya está registrado. Por favor, inicia sesión.')
-            return redirect(url_for('login'))
+            # El nombre de usuario ya está en uso
+            flash('El nombre de usuario ya está en uso. Por favor, intenta con otro nombre.')
+            return redirect(url_for('registro',registration_error = 'true'))  # Redirigir de nuevo a la página de registro
+        
         else:
             # Insertar el nuevo usuario en la base de datos
             cursor.execute("INSERT INTO usuarios (username, password) VALUES (%s, %s)", (username, password))
             db.database.commit()
             flash('Usuario registrado correctamente. Por favor, inicia sesión.')
-            return redirect(url_for('login'))
+            return redirect(url_for('registro',registration_error = 'false'))
 
     return render_template('registro.html')
 
@@ -62,16 +62,39 @@ def login():
 
     return render_template('login.html')
 
+# @app.route('/index')
+# def index():
+#     # Verificar si el usuario ha iniciado sesión
+#     if 'loggedin' in session and session['loggedin']:
+#         # El usuario ha iniciado sesión, se renderiza index.html
+#         return render_template('index.html')
+#     else:
+#         # El usuario no ha iniciado sesión, redirigir al login
+#         return redirect(url_for('login'))
 @app.route('/index')
 def index():
-    # Verificar si el usuario ha iniciado sesión
     if 'loggedin' in session and session['loggedin']:
-        # El usuario ha iniciado sesión, se renderiza index.html
-        return render_template('index.html')
-    else:
-        # El usuario no ha iniciado sesión, redirigir al login
-        return redirect(url_for('login'))
-
+        username = session['username']
+        cursor = db.database.cursor()
+        
+        # Obtener el id del usuario actual
+        cursor.execute("SELECT id FROM usuarios WHERE username = %s", (username,))
+        user_id = cursor.fetchone()[0] if cursor.rowcount > 0 else None
+        
+        if user_id:
+            # Consultar las tareas asociadas al usuario actual
+            cursor.execute("SELECT * FROM tareas WHERE user_id = %s", (user_id,))
+            myresult = cursor.fetchall()
+            #convertir datos a diccionario 
+            insertObject = []
+            columName = [colum[0] for colum in cursor.description]
+            for record in myresult:
+                insertObject.append(dict(zip(columName, record)))
+            
+            cursor.close()
+            return render_template('index.html', data=insertObject)
+    
+    return redirect(url_for('login'))
 
 
 #Rutas de la aplicacion
@@ -127,6 +150,33 @@ def edit(id):
         cursor.execute(sql,data)
         db.database.commit()
         return redirect(url_for('home'))   
+     
+
+#Agregar tareas a cada usuario que inicie sesion
+
+@app.route('/users',methods=['GET','POST'])
+def addtarea():
+    if 'loggedin' in session and session['loggedin']:
+        username = session['username']
+        cursor = db.database.cursor()
+
+        # Obtener el ID del usuario actual
+        cursor.execute("SELECT id FROM usuarios WHERE username = %s", (username,))
+        user_id = cursor.fetchone()[0] if cursor.rowcount > 0 else None
+
+        if user_id:
+            Tarea = request.form['Tarea']
+            Comentarios = request.form['Comentarios']
+            Activos = request.form['Activos']
+
+            if Tarea and Comentarios and Activos:
+                cursor.execute("INSERT INTO tareas (Tarea, Comentarios, Activos, user_id) VALUES (%s, %s, %s, %s)",
+                               (Tarea, Comentarios, Activos, user_id))
+                db.database.commit()
+                return redirect(url_for('home'))
+    
+    return redirect(url_for('login'))
+
      
 
 

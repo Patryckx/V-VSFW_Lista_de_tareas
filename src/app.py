@@ -74,36 +74,56 @@ def index():
 
 
 
-#Rutas de la aplicacion
 @app.route('/')
 def home():
-    cursor = db.database.cursor()
-    cursor.execute("SELECT * FROM tareas")
-    myresult = cursor.fetchall()
-    #convertir datos a diccionario 
-    insertObject =[]
-    columName =[colum[0] for colum in cursor.description]
-    for record in myresult:
-        insertObject.append (dict(zip(columName, record)))
-        
-    cursor.close()
-  
-    return render_template('login.html',data=insertObject)
+
+    
+    if 'loggedin' in session and session['loggedin']:
+        user_id = obtener_user_id()  # Obtener el user_id del usuario actual
+        if user_id:
+            cursor = db.database.cursor()
+            cursor.execute("SELECT * FROM tareas WHERE user_id = %s", (user_id,))
+            myresult = cursor.fetchall()
+            insertObject = []
+            columName = [colum[0] for colum in cursor.description]
+            for record in myresult:
+                insertObject.append(dict(zip(columName, record)))
+            cursor.close()
+            return render_template('index.html', data=insertObject)  # Pasar las tareas del usuario a la plantilla
+        else:
+            flash('No se pudo obtener el ID del usuario.')
+            return redirect(url_for('login'))
+    else:
+        return redirect(url_for('login'))
+
 
 #Ruta para guardar usuarios en la bdd
-@app.route('/users',methods=['GET','POST'])
+@app.route('/users',methods=['POST'])
 def addtarea():
-    Tarea = request.form['Tarea']
-    Comentarios = request.form['Comentarios']
-    Activos = request.form['Activos']
+    if 'loggedin' in session and session['loggedin']:
+        Tarea = request.form['Tarea']
+        Comentarios = request.form['Comentarios']
+        Activos = request.form['Activos']
+        user_id = obtener_user_id()  # Necesitas obtener el user_id del usuario actual
 
-    if Tarea and Comentarios and Activos:
+        if Tarea and Comentarios and Activos and user_id:
+            cursor = db.database.cursor()
+            sql = "INSERT INTO tareas (Tarea, Comentarios, Activos, user_id) VALUES (%s, %s, %s, %s)"
+            data = (Tarea, Comentarios, Activos, user_id)
+            cursor.execute(sql, data)
+            db.database.commit()
+            return redirect(url_for('home'))
+    return redirect(url_for('login'))  # Redirige al usuario al login si no está autenticado
+
+# Esta función te ayudará a obtener el user_id del usuario actual
+def obtener_user_id():
+    if 'username' in session:
         cursor = db.database.cursor()
-        sql = " INSERT INTO tareas (Tarea, Comentarios, Activos) VALUES (%s, %s, %s)"
-        data = (Tarea, Comentarios, Activos)
-        cursor.execute(sql,data)
-        db.database.commit()
-        return redirect(url_for('home'))
+        cursor.execute("SELECT id FROM usuarios WHERE username = %s", (session['username'],))
+        user = cursor.fetchone()
+        if user:
+            return user[0]
+    return None
     
 @app.route('/delete/<string:id>', methods=['POST'])
 def delete(id):
@@ -127,6 +147,9 @@ def edit(id):
         cursor.execute(sql,data)
         db.database.commit()
         return redirect(url_for('home'))   
+     
+
+     
      
 
 

@@ -28,17 +28,17 @@ def registro():
 
         if existing_user:
             # El nombre de usuario ya está en uso
-            flash('El nombre de usuario ya está en uso. Por favor, intenta con otro nombre.', 'error')
-            return redirect(url_for('registro'))  # Redirigir de nuevo a la página de registro con el mensaje de error
+            flash('El nombre de usuario ya está en uso. Por favor, intenta con otro nombre.')
+            return redirect(url_for('registro',registration_error = 'true'))  # Redirigir de nuevo a la página de registro
+        
         else:
             # Insertar el nuevo usuario en la base de datos
             cursor.execute("INSERT INTO usuarios (username, password) VALUES (%s, %s)", (username, password))
             db.database.commit()
-            flash('Usuario registrado correctamente. Por favor, inicia sesión.', 'success')
-            return redirect(url_for('login', registration_error='false'))  # Redirigir a la página de inicio de sesión con el mensaje de registro exitoso
+            flash('Usuario registrado correctamente. Por favor, inicia sesión.')
+            return redirect(url_for('registro',registration_error = 'false'))
 
     return render_template('registro.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -127,6 +127,9 @@ def edit(id):
         cursor.execute(sql,data)
         db.database.commit()
         return redirect(url_for('home'))   
+     
+
+     
      
 
 

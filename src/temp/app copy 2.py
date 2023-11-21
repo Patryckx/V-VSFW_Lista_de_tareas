@@ -22,23 +22,23 @@ def registro():
         username = request.form['username']
         password = request.form['password']
 
-        # Verificar si el usuario ya existe en la base de datos
         cursor = db.database.cursor()
         cursor.execute("SELECT * FROM usuarios WHERE username = %s", (username,))
         existing_user = cursor.fetchone()
 
         if existing_user:
-            # El usuario ya existe
-            flash('El usuario ya está registrado. Por favor, inicia sesión.')
-            return redirect(url_for('login'))
+            # El nombre de usuario ya está en uso
+            flash('El nombre de usuario ya está en uso. Por favor, intenta con otro nombre.', 'error')
+            return redirect(url_for('registro'))  # Redirigir de nuevo a la página de registro con el mensaje de error
         else:
             # Insertar el nuevo usuario en la base de datos
             cursor.execute("INSERT INTO usuarios (username, password) VALUES (%s, %s)", (username, password))
             db.database.commit()
-            flash('Usuario registrado correctamente. Por favor, inicia sesión.')
-            return redirect(url_for('login'))
+            flash('Usuario registrado correctamente. Por favor, inicia sesión.', 'success')
+            return redirect(url_for('login', registration_error='false'))  # Redirigir a la página de inicio de sesión con el mensaje de registro exitoso
 
     return render_template('registro.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -55,12 +55,22 @@ def login():
             session['loggedin'] = True
             session['username'] = username
             flash('Inicio de sesión exitoso.')
-            return redirect(url_for('home'))
+            return redirect(url_for('index'))  # Redirigir a index.html después del inicio de sesión exitoso
         else:
-            # Credenciales incorrectas
-            flash('Credenciales inválidas. Inténtalo de nuevo.')
+            # Credenciales incorrectas, redirigir a la página de inicio de sesión con una señal para mostrar la alerta
+            return redirect(url_for('login', login_error='true'))
 
     return render_template('login.html')
+
+@app.route('/index')
+def index():
+    # Verificar si el usuario ha iniciado sesión
+    if 'loggedin' in session and session['loggedin']:
+        # El usuario ha iniciado sesión, se renderiza index.html
+        return render_template('index.html')
+    else:
+        # El usuario no ha iniciado sesión, redirigir al login
+        return redirect(url_for('login'))
 
 
 
