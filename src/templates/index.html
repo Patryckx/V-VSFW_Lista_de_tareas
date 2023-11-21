@@ -7,8 +7,70 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </head>
-</head>
+<style>
+    /* Estilo para el footer */
+    footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding-top: 20px; /* Aumentar el padding superior */
+            padding-bottom: 20px; /* Aumentar el padding inferior */
+        }
+
+        /* Estilo para el contenido principal */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /*justify-content: center;*/
+            height: 100vh;
+            margin: 0; /* Elimina el margen predeterminado */
+            padding: 0; /* Elimina el relleno predeterminado */
+        }
+
+        .login-form {
+            width: 400px;
+        }
+
+        /* Estilo para el encabezado */
+        header {
+            background-color: #C70039;
+            color: black; /* Color del texto */
+            text-align: left; /* Alinea el contenido al centro */
+            width: 100%; /* Ocupa todo el ancho */
+            padding: 10px;
+            margin: 0; /* Elimina el margen superior */
+        }
+
+        .project-name {
+            margin: 0;
+            padding: 0;
+        }
+        .info-box {
+            
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        padding: 15px;
+        margin-bottom: 20px;
+        height: 100%; /* Ajusta la altura del info-box al 100% */
+        display: flex;
+        align-items: center; /* Centra verticalmente el contenido */
+        justify-content: center; /* Centra horizontalmente el contenido */
+    }
+
+        
+</style>
+
+
 <body>
+
+    <header>
+        <h1 class="project-name">Checklist Tareas</h1>
+    </header>
+
     <h1 class="text-center mt-5 mb-5 text-primary">Lista de Tareas</h1>
       
 
@@ -108,5 +170,20 @@
             </div>
         </div>
     </div> 
+    <footer>
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-6">
+                    <p>Verificación y validación de software<br>
+                    Semestre: Agosto - diciembre 2023<br>
+                    Hora: Martes V1-V3</p>
+                </div>
+                <div class="col-md-6">
+                    <p>Producto Integrador de aprendizaje<br>
+                    Equipo 2</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
