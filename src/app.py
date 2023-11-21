@@ -29,13 +29,14 @@ def registro():
         if existing_user:
             # El nombre de usuario ya está en uso
             flash('El nombre de usuario ya está en uso. Por favor, intenta con otro nombre.')
-            return redirect(url_for('registro'))  # Redirigir de nuevo a la página de registro
+            return redirect(url_for('registro',registration_error = 'true'))  # Redirigir de nuevo a la página de registro
+        
         else:
             # Insertar el nuevo usuario en la base de datos
             cursor.execute("INSERT INTO usuarios (username, password) VALUES (%s, %s)", (username, password))
             db.database.commit()
             flash('Usuario registrado correctamente. Por favor, inicia sesión.')
-            return redirect(url_for('login'))
+            return redirect(url_for('registro',registration_error = 'false'))
 
     return render_template('registro.html')
 
