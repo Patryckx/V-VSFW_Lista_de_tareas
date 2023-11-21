@@ -104,8 +104,8 @@ def addtarea():
             data = (Tarea, Comentarios, Activos, user_id)
             cursor.execute(sql, data)
             db.database.commit()
-            return redirect(url_for('home'))
-    return redirect(url_for('login'))  # Redirige al usuario al login si no está autenticado
+            return redirect(url_for('index'))
+    return redirect(url_for('home'))  # Redirige al usuario al login si no está autenticado
 
 # Esta función te ayudará a obtener el user_id del usuario actual
 def obtener_user_id():
@@ -117,29 +117,56 @@ def obtener_user_id():
             return user[0]
     return None
     
+# @app.route('/delete/<string:id>', methods=['POST'])
+# def delete(id):
+#         cursor = db.database.cursor()
+#         sql = "DELETE FROM tareas WHERE id=%s"
+#         data = (id,)
+#         cursor.execute(sql,data)
+#         db.database.commit()
+#         return redirect(url_for('home'))
+    
+# @app.route('/edit/<string:id>', methods=['POST'])
+# def edit(id):
+#      Tarea = request.form['Tarea']
+#      Comentarios = request.form['Comentarios']
+#      Activos = request.form['Activos']
+
+#      if Tarea and Comentarios and Activos:
+#         cursor = db.database.cursor()
+#         sql = " UPDATE  tareas  SET Tarea = %s, Comentarios = %s, Activos =%s WHERE id = %s"
+#         data = (Tarea, Comentarios, Activos, id)
+#         cursor.execute(sql,data)
+#         db.database.commit()
+#         return redirect(url_for('home'))   
 @app.route('/delete/<string:id>', methods=['POST'])
 def delete(id):
+    if 'loggedin' in session and session['loggedin']:
         cursor = db.database.cursor()
         sql = "DELETE FROM tareas WHERE id=%s"
         data = (id,)
-        cursor.execute(sql,data)
+        cursor.execute(sql, data)
         db.database.commit()
+        return redirect(url_for('index'))
+    else:
         return redirect(url_for('home'))
-    
+
 @app.route('/edit/<string:id>', methods=['POST'])
 def edit(id):
-     Tarea = request.form['Tarea']
-     Comentarios = request.form['Comentarios']
-     Activos = request.form['Activos']
+    if 'loggedin' in session and session['loggedin']:
+        Tarea = request.form['Tarea']
+        Comentarios = request.form['Comentarios']
+        Activos = request.form['Activos']
 
-     if Tarea and Comentarios and Activos:
-        cursor = db.database.cursor()
-        sql = " UPDATE  tareas  SET Tarea = %s, Comentarios = %s, Activos =%s WHERE id = %s"
-        data = (Tarea, Comentarios, Activos, id)
-        cursor.execute(sql,data)
-        db.database.commit()
-        return redirect(url_for('home'))   
-     
+        if Tarea and Comentarios and Activos:
+            cursor = db.database.cursor()
+            sql = " UPDATE  tareas  SET Tarea = %s, Comentarios = %s, Activos =%s WHERE id = %s"
+            data = (Tarea, Comentarios, Activos, id)
+            cursor.execute(sql, data)
+            db.database.commit()
+            return redirect(url_for('index'))
+    else:
+        return redirect(url_for('home'))
 
      
      
