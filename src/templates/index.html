@@ -80,16 +80,17 @@
                 <form action="/users" method="POST">
                     <div class="row mb-3">
                         <div class="col">
-                            <label >Tarea</label>
+                            <label >Titulo </label>
                             <input type="text" class="form-control mb-3" name="Tarea"/>
                         </div>
                         <div class="col">
                             <label >Comentarios</label>
-                            <input type="text" class="form-control mb-3" name="Comentarios"/>
+                            <input type="textarea" class="form-control mb-3" name="Comentarios"/>
+                           <!-- <textarea class="form-control mb-3" name="comentarios" id="comentarios" rows="3" cols="20"></textarea>-->
                         </div>
                         <div class="col">
-                            <label >Activos</label>
-                            <input type="text" class="form-control mb-3" name="Activos"/>
+                            <label >Fecha limite</label>
+                            <input type="date" class="form-control mb-3" name="Activos"/>
                         </div>
                         <div class="col">
                            <button class="btn btn-primary mb-m mt-4" type="submit">Save</button>
@@ -108,12 +109,12 @@
 
                 <table class="table table-bordered">
                     <thead>
-                        <th scope="col">#</th>
-                        <th scope="col">Tarea</th>
+                        <th scope="col">#ID</th>
+                        <th scope="col">Titulo</th>
                         <th scope="col">Comentarios</th>
-                        <th scope="col">Activo</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
+                        <th scope="col">Fecha limite</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Completada</th>
                     </thead>
 
                
@@ -131,7 +132,7 @@
                      <td>
                         <form action="{{ url_for('delete', id=d.id) }}" method="post" style="display:inline;">
                             <input type="hidden"  name="id" value="{{d.id}}" >
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            <button type="submit" class="btn btn-danger btn-sm">Done</button>
                         </form>
                     </td>
                    </tr>
