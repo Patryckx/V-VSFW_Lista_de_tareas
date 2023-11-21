@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-   <!-- <header>
+    <header>
         <h1 class="project-name">Checklist <br>Tareas</h1>
-         Agrega el enlace a tu imagen para el logo 
-        <img src="C:\Users\Patryck\Desktop\V-VSFW_Lista_de_tareas\src\templates\img\checklist.png" alt="Logo del proyecto" class="project-logo">
-    </header>-->
+        <!-- Agrega el enlace a tu imagen para el logo 
+        <img src="C:\Users\Patryck\Desktop\V-VSFW_Lista_de_tareas\src\templates\img\checklist.png" alt="Logo del proyecto" class="project-logo">-->
+    </header>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,81 +16,56 @@
 <style>
     /* Estilo para el footer */
     footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            padding-top: 20px; /* Aumentar el padding superior */
-            padding-bottom: 20px; /* Aumentar el padding inferior */
-        }
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #007bff;
+        color: white;
+        text-align: center;
+    }
 
-        /* Estilo para el contenido principal */
-        body {
+    /* Estilo para el contenido principal */
+    body {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            /*justify-content: center;*/
             height: 100vh;
-            margin: 0; /* Elimina el margen predeterminado */
-            padding: 0; /* Elimina el relleno predeterminado */
+            margin-bottom: 60px; /* Altura del footer */
         }
 
         .login-form {
             width: 400px;
         }
-
         /* Estilo para el encabezado */
         header {
-            background-color: #C70039;
-            color: black; /* Color del texto */
-            text-align: left; /* Alinea el contenido al centro */
-            width: 100%; /* Ocupa todo el ancho */
-            padding: 10px;
-            margin: 0; /* Elimina el margen superior */
-        }
-
-        .project-name {
-            margin: 0;
-            padding: 0;
-        }
-        .info-box {
-            
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        padding: 15px;
-        margin-bottom: 20px;
-        height: 100%; /* Ajusta la altura del info-box al 100% */
-        display: flex;
-        align-items: center; /* Centra verticalmente el contenido */
-        justify-content: center; /* Centra horizontalmente el contenido */
-    }
-
-        header2 {
             background-color: #FFFFCC;
             padding: 10px;
             text-align: center; /* Alinea el contenido al centro */
             width: 100%; /* Ocupa todo el ancho */
         }
+
+        .project-name {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+
+        .project-logo {
+            display: inline-block;
+            margin-left: 10px; /* Ajusta el margen según necesites */
+            height: 30px; /* Ajusta la altura del logo según necesites */
+            /* Agrega cualquier otro estilo necesario */
+        }
 </style>
 
 
 <body>
-    <header>
-        <h1 class="project-name">Checklist Tareas</h1>
-    </header>
     
     
 
     <div class="container mt-5">
         
         <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="info-box">
-                    <h1>Gestor <br>de tareas<br> para tu<br> día a día</h1>
-                </div>
-            </div>
             <div class="col-md-6">
                 <div class="card shadow">
                     <div class="card-body">
